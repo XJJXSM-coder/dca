@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0e2439"/>
+  <path d="M96 352 L192 240 L288 304 L416 144" stroke="#d9ab68" stroke-width="28" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="416" cy="144" r="26" fill="#d9ab68"/>
+  <text x="256" y="440" font-family="system-ui" font-size="64" font-weight="700" fill="#f4f1ea" text-anchor="middle">DCA</text>
+</svg>
