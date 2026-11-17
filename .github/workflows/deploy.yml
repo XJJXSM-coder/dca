@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,15 +31,10 @@ jobs:
         with:
           node-version: 20
 
-      # 用 --config.confirmModulesPurge=false 避免交互提示；
-      # esbuild 的 postinstall 需要显式允许，否则 vite build 缺原生二进制。
       - name: Install dependencies
         run: |
-          pnpm install --no-frozen-lockfile --config.confirmModulesPurge=false || pnpm install --no-frozen-lockfile
+          pnpm install --no-frozen-lockfile
           pnpm rebuild esbuild
-
-      - name: Verify esbuild
-        run: pnpm exec esbuild --version
 
       - name: Test
         run: pnpm test
@@ -47,21 +42,11 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      # 推到 gh-pages 分支，Pages 走「分支部署」时可直接消费
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: ./dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          force_orphan: true
