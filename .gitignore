@@ -1,0 +1,31 @@
+# 依赖
+node_modules/
+.pnpm-store/
+
+# npm/pnpm 配置文件：可能含 registry token，不入库
+*.npmrc
+.npmrc*
+
+# 构建产物（可从源码重建；docs/dca-tracker-dist 用于分发归档，单独管理）
+dist/
+*.tsbuildinfo
+
+# 环境与密钥
+.env
+.env.*
+!.env.example
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# 临时文件（vite/编辑器写入过程中的残留）
+*.tmp
+.*.tmpdir/
