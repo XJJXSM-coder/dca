@@ -33,10 +33,11 @@ export default defineConfig({
         theme_color: '#0e2439',
         background_color: '#f4f1ea',
         display: 'standalone',
-        display_override: ['standalone', 'minimal-ui'],
         orientation: 'portrait',
         start_url: './',
         scope: './',
+        // 固定应用标识：缺 id 时部分安卓 Chrome 判断「已安装」会出问题
+        id: '/dca/',
         categories: ['finance', 'productivity'],
         icons: [
           // 安卓需要 PNG；192/512 是 Chrome 安装的必要条件
