@@ -31,10 +31,12 @@ jobs:
         with:
           node-version: 20
 
-      # esbuild 需要跑 postinstall 才能拿到原生二进制；
-      # 新版 pnpm 从 package.json 的 pnpm 字段读不到，改由 pnpm-workspace.yaml 的 onlyBuiltDependencies 提供。
+      # 用 --config.confirmModulesPurge=false 避免交互提示；
+      # esbuild 的 postinstall 需要显式允许，否则 vite build 缺原生二进制。
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: |
+          pnpm install --no-frozen-lockfile --config.confirmModulesPurge=false || pnpm install --no-frozen-lockfile
+          pnpm rebuild esbuild
 
       - name: Verify esbuild
         run: pnpm exec esbuild --version
